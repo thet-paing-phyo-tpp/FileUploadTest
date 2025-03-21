@@ -1,0 +1,19 @@
+﻿@page "/using-direct-http"
+
+@inject AppJsInterop AppJsInterop
+
+<h3>UsingDirectHttp</h3>
+
+<input type="file" id="file-input" />
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await AppJsInterop.UploadFile();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

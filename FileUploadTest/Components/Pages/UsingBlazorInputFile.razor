@@ -1,0 +1,29 @@
+﻿@page "/"
+@page "/using-blazor-input-file"
+
+@inject AppJsInterop AppJsInterop
+
+<h3>UsingBlazorInputFile</h3>
+
+<InputFile OnChange="HandleFileInput" />
+
+@code {
+    private async Task HandleFileInput(InputFileChangeEventArgs e)
+    {
+        var stopwatch = new Stopwatch();
+
+        stopwatch.Start();
+
+        var file = e.File;
+
+        using var fileStream = new FileStream(file.Name, FileMode.Create);
+
+        using var stream = file.OpenReadStream(file.Size);
+
+        await stream.CopyToAsync(fileStream);
+
+        stopwatch.Stop();
+
+        await AppJsInterop.ShowMessage($"{stopwatch.ElapsedMilliseconds.ToString()} ms");
+    }
+}
